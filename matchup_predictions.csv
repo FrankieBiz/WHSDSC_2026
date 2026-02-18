@@ -1,0 +1,17 @@
+game,home_team,away_team,home_win_prob,predicted_winner
+1,brazil,kazakhstan,0.7027,brazil
+2,netherlands,mongolia,0.7009,netherlands
+3,peru,rwanda,0.6391,peru
+4,thailand,oman,0.6765,thailand
+5,pakistan,germany,0.7118,pakistan
+6,india,usa,0.5449,india
+7,panama,switzerland,0.5159,panama
+8,iceland,canada,0.6904,iceland
+9,china,france,0.7188,china
+10,philippines,morocco,0.5125,philippines
+11,ethiopia,saudi_arabia,0.4271,saudi_arabia
+12,singapore,new_zealand,0.6013,singapore
+13,guatemala,south_korea,0.6331,guatemala
+14,uk,mexico,0.5369,uk
+15,vietnam,serbia,0.5466,vietnam
+16,indonesia,uae,0.5525,indonesia

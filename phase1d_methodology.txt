@@ -1,0 +1,89 @@
+WHSDSC 2026 — PHASE 1D: METHODOLOGY RESPONSES
+=================================================
+
+══════════════════════════════════════════════════
+1. PROCESS
+══════════════════════════════════════════════════
+
+Q: "How did you clean or transform the raw data before analysis?"
+(~50 words)
+
+We aggregated the 25,827 line-level records into 1,312 game-level summaries by summing goals, xG, shots, and penalties per team per game. Special-teams rows (PP, PK, empty net) were separated from even-strength play. We built a team-game panel by unstacking home/away sides, enabling rolling computations across each team's sequential game history.
+
+---
+
+Q: "Did you create any additional variables?"
+(~25 words)
+
+Yes: margin-adjusted ELO ratings, multi-window rolling averages (7/15/30 games), opponent-adjusted xG, Bayesian-smoothed win rates, goalie GSAx, line-level xG per 60 seconds, and home-vs-away differentials.
+
+---
+
+══════════════════════════════════════════════════
+2. TOOLS AND TECHNIQUES
+══════════════════════════════════════════════════
+
+Q: "What software tools did you use?"
+[Select all that apply]
+
+- Python
+- Excel (for viewing matchup spreadsheet)
+
+---
+
+Q: "How did you use the selected software, and for what purposes?"
+(~50 words)
+
+Python (pandas, NumPy, scikit-learn, SciPy, matplotlib) handled all data processing, feature engineering, model training, and visualization. Pandas performed game-level aggregation and rolling statistics. Scikit-learn trained and cross-validated our ensemble models. SciPy optimized blend weights via Nelder-Mead. Matplotlib generated the visualization. Excel was used only to review the matchup schedule.
+
+---
+
+Q: "What statistical methods did you employ?"
+(~100 words)
+
+We built a five-model stacked ensemble: Logistic Regression, two Gradient Boosting classifiers (differing in depth and tree count), Random Forest, and Extra Trees. Each generated out-of-fold predictions via 5-fold stratified cross-validation. Blend weights were optimized using Nelder-Mead minimization to maximize AUC. Feature selection used Extra Trees importance scores to reduce 208 engineered features to the top 50. ELO ratings incorporated win-margin multipliers for both goals and xG. Opponent-adjusted xG normalized each team's output by their opponent's rolling offensive strength. Bayesian smoothing with an informative prior (k=5) stabilized win rates for teams with limited data. Pearson and Spearman correlations assessed the disparity-performance relationship.
+
+---
+
+══════════════════════════════════════════════════
+3. YOUR PREDICTIONS
+══════════════════════════════════════════════════
+
+Q (1a): "How did you determine power rankings and matchup win probabilities?"
+(~50 words)
+
+Power rankings combine nine percentile-ranked metrics: goals-based ELO (20%), xG-based ELO (18%), 30-game xG% (15%), Bayesian win rate (12%), opponent-adjusted xG% (12%), power-play xGF (10%), goalie GSAx (7%), goalie win rate (4%), and penalty discipline (2%). Matchup probabilities come from our optimized five-model ensemble using each team's latest rolling features.
+
+---
+
+Q (1b): "How did you approach summarizing offensive line quality disparity?"
+(~50 words)
+
+We computed each team's first-line and second-line xG per 60 seconds of ice time, then adjusted for opponent defensive pairing strength. The adjustment normalizes by the league-average defensive xGA/60, boosting xG earned against tough defenses and penalizing production against weak ones. The disparity ratio is adjusted first-line xG/60 divided by adjusted second-line xG/60.
+
+---
+
+Q (1c): "What data visualization choices did you make to clarify the numbers and emphasize takeaways?"
+(~50 words)
+
+We chose a scatter plot with four-color quadrant coding to immediately convey each team's category: balanced-strong, top-heavy-strong, balanced-weak, or top-heavy-weak. Median reference lines divide the space. A regression trend line with Pearson/Spearman statistics quantifies the relationship. Team labels, quadrant shading, and a detailed caption ensure the chart is self-explanatory without additional context.
+
+---
+
+══════════════════════════════════════════════════
+4. YOUR INSIGHTS
+══════════════════════════════════════════════════
+
+Q: "How did you assess your model performance?"
+(~50 words)
+
+We used 5-fold stratified cross-validation with out-of-fold (OOF) predictions to prevent data leakage. Our optimized blend achieved 0.683 AUC. We established a theoretical ceiling of ~0.69 AUC by testing whether same-game xG perfectly predicts outcomes—our model reaches 99% of this ceiling, confirming we extracted nearly all predictive signal available.
+
+---
+
+Q: "Did you use Generative AI tools? If so, explain how."
+(~50 words)
+
+Yes, we used Claude as a coding assistant throughout the project. It helped write Python scripts for data processing, feature engineering, and model training. We directed all analytical decisions—feature selection criteria, model architecture, and evaluation methodology—while using AI to accelerate implementation. All statistical choices and interpretations were made by our team.
+
+---
